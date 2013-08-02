@@ -8,8 +8,9 @@ class ShortURL(models.Model):
     SHORTURL_STATUS_CHOICES = (
         ('A', _('Active')),     # Created, in use
         ('R', _('Removed')),    # Removed, do not redirect
-        ('S', _('Spam')),       # Marked as spam
+        ('S', _('Spam')),       # Marked as spam, do not redirect
         ('V', _('Verified')),   # Manually checked & verified, OK
+        ('E', _('Expired')),    # Expired, do not redirect
     )
 
     url = models.URLField(verbose_name='URL')
