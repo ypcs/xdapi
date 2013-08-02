@@ -18,7 +18,7 @@ BASE_DIR = os.path.dirname(os.path.dirname(__file__))
 # See https://docs.djangoproject.com/en/dev/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = ''
+SECRET_KEY = None
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
@@ -87,3 +87,8 @@ try:
     import xdapi.local_settings
 except ImportError:
     pass
+
+if SECRET_KEY == None:
+    from django.utils.crypto import get_random_string
+    chars = 'abcdefghijklmnopqrstuvwxyz0123456789!@#$%^&*(-_=+)'
+    SECRET_KEY = get_random_string(50, chars)
