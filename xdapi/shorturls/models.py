@@ -1,3 +1,36 @@
+# -*- coding: utf-8 -*-
 from django.db import models
+from django_extensions.db.fields import CreationDateTimeField, ModificationDateTimeField
 
-# Create your models here.
+_ = lambda x:x
+
+class ShortURL(models.Model):
+    SHORTURL_STATUS_CHOICES = (
+        ('A', _('Active')),     # Created, in use
+        ('R', _('Removed')),    # Removed, do not redirect
+        ('S', _('Spam')),       # Marked as spam
+        ('V', _('Verified')),   # Manually checked & verified, OK
+    )
+
+    url = models.URLField(verbose_name='URL')
+    key = models.CharField(max_length=255, unique=True)
+
+    title = models.CharField(max_length=255, blank=True, null=True)
+
+    visit_count = models.PositiveIntegerField(editable=False, default=0)
+
+    created = CreationDateTimeField()
+    modified = ModificationDateTimeField()
+
+    status = models.CharField(max_length=1, choices=SHORTURL_STATUS_CHOICES, default='A')
+
+    def update_visits(self):
+        self.visit_count += 1
+        self.save()
+
+    def __str__(self):
+        return "%s => %s" % (self.key, self.url)
+
+    class Meta:
+        verbose_name = 'Short URL'
+        verbose_name_plural = 'Short URLs'
