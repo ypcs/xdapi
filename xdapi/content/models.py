@@ -9,6 +9,8 @@ from bs4 import BeautifulSoup
 import requests
 import reversion
 
+from taggit.managers import TaggableManager
+
 _ = lambda x:x
 
 # TODO: Add support for OpenGraph
@@ -82,6 +84,8 @@ class Content(models.Model):
 
     status = models.CharField(max_length=1, choices=CONTENT_STATUS_CHOICES, default=CONTENT_STATUS_ACTIVE)
     owner = models.ForeignKey(settings.AUTH_USER_MODEL, blank=True, null=True)
+
+    tags = TaggableManager()
 
     def get_page_title(self):
         # TODO: Fetch page meta: og:title, og:sitename, og:description
