@@ -26,6 +26,7 @@ CONTENT_STATUS_EXPIRED = 'E'
 CONTENT_STATUS_SPAM = 'S'
 CONTENT_STATUS_REMOVED = 'R'
 CONTENT_STATUS_VERIFIED = 'V'
+CONTENT_STATUS_PRIVATE = 'P'
 
 CONTENT_DISABLED_STATUSES = (
     CONTENT_STATUS_REMOVED,
@@ -45,6 +46,7 @@ class Content(models.Model):
         (CONTENT_STATUS_VERIFIED, _('Verified')),   # Manually checked & verified, OK
         (CONTENT_STATUS_EXPIRED, _('Expired')),    # Expired, do not redirect
         (CONTENT_STATUS_FAILURE, _('Failure')), # Has raised automatically detected failure
+        (CONTENT_STATUS_PRIVATE, _('Private')), # Private content, owner must be logged in to access
     )
     
     content_type = models.CharField(max_length=1, choices=CONTENT_TYPES)
