@@ -3,6 +3,7 @@ from django.db import models
 from django.core.validators import RegexValidator
 from django_extensions.db.fields import CreationDateTimeField, ModificationDateTimeField, AutoSlugField
 from django.conf import settings
+from django.core.exceptions import ValidationError
 
 from bs4 import BeautifulSoup
 import requests
@@ -11,11 +12,14 @@ import reversion
 _ = lambda x:x
 
 
+CONTENT_TYPE_URL = 'U'
+CONTENT_TYPE_PASTE = 'P'
+CONTENT_TYPE_FILE = 'F'
 CONTENT_TYPES = (
-    ('P', _('Pastebin')),
-    ('U', _('URL Redirect')),
+    (CONTENT_TYPE_PASTE, _('Pastebin')),
+    (CONTENT_TYPE_URL, _('URL Redirect')),
     ('W', _('Webshots')),
-    ('F', _('File Upload')),
+    (CONTENT_TYPE_FILE, _('File Upload')),
 )
 
 CONTENT_KEY_REGEX = r'^[\w\d:-]{3,255}'
@@ -58,8 +62,8 @@ class Content(models.Model):
 
     
     content_type = models.CharField(max_length=1, choices=CONTENT_TYPES)
-    #key = models.CharField(max_length=255, unique=True, validators=[RegexValidator(regex=settings.CONTENT_KEY_REGEX)])
-    key = AutoSlugField(editable=True, blank=True, unique=True, populate_from=['title', 'content'], validators=[RegexValidator(regex=settings.CONTENT_KEY_REGEX)])
+    key = models.CharField(max_length=255, unique=True, validators=[RegexValidator(regex=settings.CONTENT_KEY_REGEX)])
+    #key = AutoSlugField(editable=True, blank=True, unique=True, populate_from=['title', 'content'], validators=[RegexValidator(regex=settings.CONTENT_KEY_REGEX)])
 
     title = models.CharField(max_length=255, blank=True, null=True)
     content = models.TextField(blank=True, null=True)
@@ -89,11 +93,22 @@ class Content(models.Model):
             self.status = CONTENT_STATUS_FAILURE
             return ""
 
+    def clean(self):
+        if self.content_type == CONTENT_TYPE_URL:
+            if self.url is None or self.url == '':
+                raise ValidationError(_("You must specify URL when creating URL redirections!"))
+        elif self.content_type == CONTENT_TYPE_FILE:
+            if self.uploaded_file is None or self.uploaded_file == '':
+                raise ValidationError(_("You must upload file when creating file uploads!"))
+        elif self.content_type == CONTENT_TYPE_PASTE:
+            if self.content is None or self.content == '':
+                # TODO: Allow fetching content from URL
+                raise ValidationError(_("You must specify content when creating paste!"))
+
     def save(self, *args, **kwargs):
-        # TODO: If shorturl, check that URL has been defined
-        # TODO: If pastebin, check that content has been set, OR if URL has been set, fetch content from it, content must be text/*
+        # TODO: If pastebin, if URL has been set and no content, fetch content from url
         # TODO: If no title and has url, fetch title from it (or at least, try!)
-        if self.title == "" and self.url != "":
+        if self.content_type == CONTENT_TYPE_URL and self.title == "" and self.url != "":
             self.title = self.get_page_title()
         super(Content, self).save(*args, **kwargs)
 
