@@ -12,7 +12,7 @@ import reversion
 _ = lambda x:x
 
 class ContentAdmin(reversion.VersionAdmin):
-    list_display = ('key', 'content_type', 'title', 'url', 'owner', 'status',)
+    list_display = ('key', 'content_type', 'title', 'url', 'owner', 'status', 'mime_type',)
     fieldsets = [
         (None, {'fields': ['content_type', 'key', 'title', 'content', 'url',],}),
         (_('Additional Details'), {'fields': ['status', 'owner', 'mime_type',], 'classes': ['collapse',],})
