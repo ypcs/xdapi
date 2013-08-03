@@ -61,6 +61,7 @@ class ShortURL(models.Model):
         return "%s => %s" % (self.key, self.url)
 
     def save(self, *args, **kwargs):
+        # TODO: Check HTTP status code, if not 200, alert user
         print self.title
         if self.title == "":
             self.title = self.get_page_title()
