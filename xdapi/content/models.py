@@ -39,6 +39,8 @@ CONTENT_ALLOW_AUTOREDIRECT_STATUSES = (
     CONTENT_STATUS_VERIFIED,
 )
 
+MIME_TYPE_DEFAULT = 'text/plain'
+
 class Content(models.Model):
     CONTENT_STATUS_CHOICES = (
         (CONTENT_STATUS_ACTIVE, _('Active')),     # Created, in use
@@ -56,6 +58,8 @@ class Content(models.Model):
     title = models.CharField(max_length=255, blank=True, null=True)
     content = models.TextField(blank=True, null=True)
     url = models.URLField(verbose_name='URL', blank=True, null=True)
+
+    mime_type = models.CharField(max_length=255, default=MIME_TYPE_DEFAULT)
 
     #visit_count = models.PositiveIntegerField(editable=False, default=0)
 
