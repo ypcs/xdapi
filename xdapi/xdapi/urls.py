@@ -3,8 +3,8 @@ from django.conf.urls import patterns, include, url
 from django.contrib import admin
 admin.autodiscover()
 
-#from shorturls.views import ShortURLRedirectView
-#from shorturls.models import SHORTURL_KEY_REGEX
+from django.conf import settings
+from content.views import ContentView
 
 urlpatterns = patterns('',
     # Examples:
@@ -13,5 +13,5 @@ urlpatterns = patterns('',
 
     url(r'^admin/', include(admin.site.urls)),
 
-#    url(r'^(?P<key>' + SHORTURL_KEY_REGEX + ')$', ShortURLRedirectView.as_view(), name='shorturl'),
+    url(r'^(?P<key>' + settings.CONTENT_KEY_REGEX + ')$', ContentView.as_view(), name='content'),
 )
