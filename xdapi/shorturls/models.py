@@ -12,18 +12,25 @@ _ = lambda x:x
 SHORTURL_KEY_REGEX = r'^[\w\d:-]{3,255}'
 SHORTURL_KEY_RANDOM_CHARACTERS = 'abcdefghijklmnopqrstuvwxyz01234567890'
 
+SHORTURL_STATUS_FAILURE = 'f'
+SHORTURL_STATUS_ACTIVE = 'A'
+SHORTURL_STATUS_EXPIRED = 'E'
+SHORTURL_STATUS_SPAM = 'S'
+SHORTURL_STATUS_REMOVED = 'R'
+
 class ShortURL(models.Model):
     SHORTURL_STATUS_CHOICES = (
-        ('A', _('Active')),     # Created, in use
-        ('R', _('Removed')),    # Removed, do not redirect
-        ('S', _('Spam')),       # Marked as spam, do not redirect
+        (SHORTURL_STATUS_ACTIVE, _('Active')),     # Created, in use
+        (SHORTURL_STATUS_REMOVED, _('Removed')),    # Removed, do not redirect
+        (SHORTURL_STATUS_SPAM, _('Spam')),       # Marked as spam, do not redirect
         ('V', _('Verified')),   # Manually checked & verified, OK
-        ('E', _('Expired')),    # Expired, do not redirect
+        (SHORTURL_STATUS_EXPIRED, _('Expired')),    # Expired, do not redirect
         ('C', _('Confirm')),    # Confirm, that user really want's to continue
         ('w', _('WebShot TODO')),    # Generate webshot from this
         ('W', _('WebShot Generated')), # WebShot for this exists
+        (SHORTURL_STATUS_FAILURE, _('Failure')), # Has raised automatically detected failure
     )
-    SHORTURL_DISABLED_STATUSES = ('R', 'S', 'E',)
+    SHORTURL_DISABLED_STATUSES = (SHORTURL_STATUS_REMOVED, SHORTURL_STATUS_SPAM, SHORTURL_STATUS_EXPIRED,)
 
     url = models.URLField(verbose_name='URL')
     key = models.CharField(max_length=255, unique=True, validators=[RegexValidator(regex=SHORTURL_KEY_REGEX)])
@@ -35,7 +42,7 @@ class ShortURL(models.Model):
     created = CreationDateTimeField()
     modified = ModificationDateTimeField()
 
-    status = models.CharField(max_length=1, choices=SHORTURL_STATUS_CHOICES, default='A')
+    status = models.CharField(max_length=1, choices=SHORTURL_STATUS_CHOICES, default=SHORTURL_STATUS_ACTIVE)
 
     owner = models.ForeignKey(settings.AUTH_USER_MODEL, blank=True, null=True)
 
@@ -50,11 +57,15 @@ class ShortURL(models.Model):
         self.save()
 
     def get_page_title(self):
-        req = requests.get(self.url)
-        if req.status_code == requests.codes.ok:
-            soup = BeautifulSoup(req.text)
-            return soup.title.string
-        else:
+        try:
+            req = requests.get(self.url)
+            if req.status_code == requests.codes.ok:
+                soup = BeautifulSoup(req.text)
+                return soup.title.string
+            else:
+                return ""
+        except requests.exceptions.ConnectionError:
+            self.status = SHORTURL_STATUS_FAILURE
             return ""
 
     def __str__(self):
