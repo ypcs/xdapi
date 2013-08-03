@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 from django.db import models
 from django.core.validators import RegexValidator
-from django_extensions.db.fields import CreationDateTimeField, ModificationDateTimeField
+from django_extensions.db.fields import CreationDateTimeField, ModificationDateTimeField, AutoSlugField
 from django.conf import settings
 
 from bs4 import BeautifulSoup
@@ -58,7 +58,8 @@ class Content(models.Model):
 
     
     content_type = models.CharField(max_length=1, choices=CONTENT_TYPES)
-    key = models.CharField(max_length=255, unique=True, validators=[RegexValidator(regex=settings.CONTENT_KEY_REGEX)])
+    #key = models.CharField(max_length=255, unique=True, validators=[RegexValidator(regex=settings.CONTENT_KEY_REGEX)])
+    key = AutoSlugField(editable=True, blank=True, unique=True, populate_from=['title', 'content'], validators=[RegexValidator(regex=settings.CONTENT_KEY_REGEX)])
 
     title = models.CharField(max_length=255, blank=True, null=True)
     content = models.TextField(blank=True, null=True)
