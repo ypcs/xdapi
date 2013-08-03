@@ -25,6 +25,11 @@ class ShortURL(models.Model):
 
     status = models.CharField(max_length=1, choices=SHORTURL_STATUS_CHOICES, default='A')
 
+    def is_redirectable(self):
+        # TODO: Check status, and tell if we shouldn't redirect
+        # TODO: Check this @ views.py
+        return True
+
     def update_visits(self):
         self.visit_count += 1
         self.save()
