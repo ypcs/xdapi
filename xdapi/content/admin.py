@@ -26,16 +26,16 @@ class ContentAdmin(admin.ModelAdmin):
     def change_view(self, request, object_id, form_url='', extra_context=None):
         if not self.queryset(request).filter(id=object_id).exists():
             return HttpResponseRedirect(reverse('admin:content_content_changelist'))
-        return super(MyModelAdmin, self).change_view(request, object_id, form_url, extra_context)
+        return super(ContentAdmin, self).change_view(request, object_id, form_url, extra_context)
 
     def delete_view(self, request, object_id, extra_context=None):
         if not self.queryset(request).filter(id=object_id).exists():
             return HttpResponseRedirect(reverse('admin:content_content_changelist'))
-        return super(MyModelAdmin, self).delete_view(request, object_id, extra_context)
+        return super(ContentAdmin, self).delete_view(request, object_id, extra_context)
 
     def history_view(self, request, object_id, extra_context=None):
         if not self.queryset(request).filter(id=object_id).exists():
             return HttpResponseRedirect(reverse('admin:content_content_changelist'))
-        return super(MyModelAdmin, self).history_view(request, object_id, extra_context)
+        return super(ContentAdmin, self).history_view(request, object_id, extra_context)
 
 admin.site.register(Content, ContentAdmin)
