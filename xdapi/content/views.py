@@ -4,6 +4,9 @@ from django.views.generic.base import TemplateView, RedirectView
 
 #from shorturls.models import ShortURL
 
+# TODO: If shorturl, and autoredirect & redirect allowed => return redirect url
+# TODO: If other content, or autoredirect disabled, or redirect not allowed => display preview
+
 class ContentView(TemplateView):
     pass
 
