@@ -16,6 +16,7 @@ class ShortURL(models.Model):
         ('E', _('Expired')),    # Expired, do not redirect
         ('C', _('Confirm')),    # Confirm, that user really want's to continue
     )
+    SHORTURL_DISABLED_STATUSES = ('R', 'S', 'E',)
 
     url = models.URLField(verbose_name='URL')
     key = models.CharField(max_length=255, unique=True, validators=[RegexValidator(regex=SHORTURL_KEY_REGEX)])
@@ -30,8 +31,9 @@ class ShortURL(models.Model):
     status = models.CharField(max_length=1, choices=SHORTURL_STATUS_CHOICES, default='A')
 
     def is_redirectable(self):
-        # TODO: Check status, and tell if we shouldn't redirect
         # TODO: Check this @ views.py
+        if self.status in SHORTURL_DISABLED_STATUSES:
+            return False
         return True
 
     def update_visits(self):
