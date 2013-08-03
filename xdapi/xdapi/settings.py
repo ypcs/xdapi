@@ -41,7 +41,7 @@ INSTALLED_APPS = (
     'django.contrib.staticfiles',
     'south',
     'django_extensions',
-    'shorturls',
+#    'shorturls',
 )
 
 MIDDLEWARE_CLASSES = (
@@ -90,6 +90,8 @@ STATIC_URL = '/static/'
 TEMPLATE_DIRS = (
     os.path.abspath(os.path.join(PROJECT_DIR, 'templates')),
 )
+
+CONTENT_KEY_REGEX = r'^[\w\d:-]{3,255}'
 
 try:
     import xdapi.local_settings
