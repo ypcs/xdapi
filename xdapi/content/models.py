@@ -63,6 +63,7 @@ class Content(models.Model):
     title = models.CharField(max_length=255, blank=True, null=True)
     content = models.TextField(blank=True, null=True)
     url = models.URLField(verbose_name='URL', blank=True, null=True)
+    uploaded_file = models.FileField(upload_to='content/uploads', blank=True, null=True)
 
     mime_type = models.CharField(max_length=255, default=MIME_TYPE_DEFAULT, verbose_name=_('MIME type'))
 
