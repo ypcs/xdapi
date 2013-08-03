@@ -59,7 +59,7 @@ class Content(models.Model):
     content = models.TextField(blank=True, null=True)
     url = models.URLField(verbose_name='URL', blank=True, null=True)
 
-    mime_type = models.CharField(max_length=255, default=MIME_TYPE_DEFAULT)
+    mime_type = models.CharField(max_length=255, default=MIME_TYPE_DEFAULT, verbose_name=_('MIME type'))
 
     #visit_count = models.PositiveIntegerField(editable=False, default=0)
 
