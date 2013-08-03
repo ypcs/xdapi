@@ -4,7 +4,7 @@
 {% block title %}{{ title }} | {% trans 'xdapi admin' %}{% endblock %}
 
 {% block branding %}
-<h1 id="site-name">{% trans 'xdapi' %}</h1>
+<h1 id="site-name"><a href="{% url 'admin:index' %}">{% trans 'xdapi' %}</a></h1>
 {% endblock %}
 
 {% block nav-global %}{% endblock %}
