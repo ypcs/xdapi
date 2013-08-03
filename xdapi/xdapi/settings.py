@@ -42,6 +42,7 @@ INSTALLED_APPS = (
     'south',
     'django_extensions',
     'content',
+#    's3_folder_storage',
 )
 
 MIDDLEWARE_CLASSES = (
@@ -92,6 +93,20 @@ TEMPLATE_DIRS = (
 )
 
 CONTENT_KEY_REGEX = r'^[\w\d:-]{3,255}'
+
+#DEFAULT_FILE_STORAGE = 's3_folder_storage.s3.DefaultStorage'
+#DEFAULT_S3_PATH = "media"
+#STATICFILES_STORAGE = 's3_folder_storage.s3.StaticStorage'
+#STATIC_S3_PATH = "static"
+#AWS_ACCESS_KEY_ID = {{ your key id here }}
+#AWS_SECRET_ACCESS_KEY = {{ your secret key here }}
+#AWS_STORAGE_BUCKET_NAME = {{ your bucket name here }}
+
+#MEDIA_ROOT = '/%s/' % DEFAULT_S3_PATH
+#MEDIA_URL = '//s3.amazonaws.com/%s/media/' % AWS_STORAGE_BUCKET_NAME
+#STATIC_ROOT = "/%s/" % STATIC_S3_PATH
+#STATIC_URL = '//s3.amazonaws.com/%s/static/' % AWS_STORAGE_BUCKET_NAME
+#ADMIN_MEDIA_PREFIX = STATIC_URL + 'admin/'
 
 try:
     import xdapi.local_settings
