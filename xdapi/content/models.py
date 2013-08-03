@@ -62,7 +62,7 @@ class Content(models.Model):
     modified = ModificationDateTimeField()
 
     status = models.CharField(max_length=1, choices=CONTENT_STATUS_CHOICES, default=CONTENT_STATUS_ACTIVE)
-    owner = models.ForeignKey(settings.AUTH_USER_MODEL, blank=True, null=True)
+    owner = models.ForeignKey(settings.AUTH_USER_MODEL, blank=True, null=True, editable=False)
 
     def update_visits(self):
         self.visit_count += 1
