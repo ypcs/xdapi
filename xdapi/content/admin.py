@@ -14,7 +14,7 @@ class ContentAdmin(admin.ModelAdmin):
     list_display = ('key', 'content_type', 'title', 'url', 'owner', 'visit_count', 'status',)
     fieldsets = [
         (None, {'fields': ['content_type', 'key', 'title', 'content', 'url',],}),
-        (_('Additional Details'), {'fields': ['status',], 'classes': ['collapse',],})
+        (_('Additional Details'), {'fields': ['status', 'owner',], 'classes': ['collapse',],})
     ]
 
     def save_model(self, request, obj, form, change):
