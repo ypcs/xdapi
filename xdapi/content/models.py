@@ -53,7 +53,6 @@ class Content(models.Model):
     content = models.TextField(blank=True, null=True)
     url = models.URLField(verbose_name='URL', blank=True, null=True)
 
-
     visit_count = models.PositiveIntegerField(editable=False, default=0)
 
     created = CreationDateTimeField()
