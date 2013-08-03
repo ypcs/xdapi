@@ -50,7 +50,7 @@ class ShortURL(models.Model):
 
     def get_page_title(self):
         req = requests.get(self.url)
-        if req.status_code == 200:
+        if req.status_code == requests.codes.ok:
             soup = BeautifulSoup(req.text)
             return soup.title.string
         else:
