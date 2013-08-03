@@ -10,6 +10,7 @@ import requests
 _ = lambda x:x
 
 SHORTURL_KEY_REGEX = r'^[\w\d:-]{3,255}'
+SHORTURL_KEY_RANDOM_CHARACTERS = 'abcdefghijklmnopqrstuvwxyz01234567890'
 
 class ShortURL(models.Model):
     SHORTURL_STATUS_CHOICES = (
