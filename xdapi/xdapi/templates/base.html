@@ -1,10 +1,117 @@
+{% load i18n %}
+{% load static %}
+{% load bootstrapped_goodies_tags %}
 <!doctype html>
-<html lang="">
+<html lang="{{ LANGUAGE_CODE|default:"en-us" }}{% if LANGUAGE_BIDI %} dir="rtl"{% endif %}>
 <head>
-<meta charset=""/>
-<title>{% block title %}xdapi{% endblock %}</title>
+    <meta charset=""/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+
+    <title>{% block title %}xdapi{% endblock %}</title>
+    {% block extrastyle %}{% endblock %}
+    <link href="{% static "bootstrap/css/bootstrap.min.css" %}" rel="stylesheet"/>
+    <style type="text/css">
+      body {
+        padding-top: 60px;
+        padding-bottom: 40px;
+      }
+    </style>
+    <link href="{% static "bootstrap/css/bootstrap-responsive.min.css" %}" rel="stylesheet"/>
+
+    {% block extrahead %}{% endblock %}
 </head>
-<body>
-{% block content %}{% endblock %}
+<body class="{% if is_popup %}popup {% endif %}{% block bodyclass %}{% endblock %}">
+
+
+
+
+<!-- Container -->
+<div class="container-fluid">
+
+    {% if not is_popup %}
+    <!-- Header -->
+    <div class="navbar navbar-inverse navbar-fixed-top">
+        <div class="navbar-inner">
+            <div class="container-fluid">
+                <a class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse">
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </a>
+                {% block branding %}{% endblock %}
+                <div class="nav-collapse collapse pull-right">
+                    <ul class="nav">
+                        {% if user.is_active and user.is_staff %}
+                        <li class="dropdown">
+                            <a href="#" class="dropdown-toggle" data-toggle="dropdown">{% trans 'Welcome,' %} <strong>{% filter force_escape %}{% firstof user.first_name user.username %}{% endfilter %}</strong> <b class="caret"></b></a>
+                            <ul class="dropdown-menu pull-right">
+                                {% if user.has_usable_password %}
+                                <li><a href="{% url 'admin:password_change' %}">{% trans 'Change password' %}</a></li>
+                                {% endif %}
+                                <li><a href="{% url 'admin:logout' %}">{% trans 'Log out' %}</a></li>
+                            </ul>
+                        </li>
+                        
+                        {% endif %}
+                        {% block nav-global %}{% endblock %}
+                    </ul>
+                </div><!--/.nav-collapse -->
+            </div>
+        </div>
+    </div>
+    <!-- END Header -->
+    <div class="row-fluid">
+        <div class="span12">
+            {% block breadcrumbs %}
+            {% endblock %}
+        </div>
+    </div>
+    {% endif %}
+
+    <!-- Content -->
+    <div id="content" class="{% block coltype %}colM{% endblock %}">
+        {% block navbar %}
+        <div class="row-fluid">
+            <div class="navbar">
+                <div class="navbar-inner">
+                    {% block pretitle %}yy{% endblock %}
+                    {% block content_title %}{% if title %}<a class="brand">xx</a>{% endif %}{% endblock %}
+                    {% block object-tools %}zz{% endblock %}
+                </div>
+            </div>
+        </div>
+        {% endblock navbar %}
+
+        {% block messages %}
+        {% if messages %}
+        <div class="row-fluid">
+            <div class="span12">
+                <div class="alert alert-info">
+                    <ul class="unstyled">
+                        {% for message in messages %}
+                        <li{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</li>
+                        {% endfor %}
+                    </ul>
+                </div>
+            </div>
+        </div>
+        {% endif %}
+        {% endblock messages %}
+
+        {% block content %}{{ content }}{% endblock %}
+        {% block sidebar %}{% endblock %}
+    </div>
+    <!-- END Content -->
+
+    {% block footer %}<footer id="footer"></footer>{% endblock %}
+</div>
+<!-- END Container -->
+
+
+
+
+
+
+    <script src="{% static "bootstrap/js/bootstrap.min.js" %}"></script>
 </body>
 </html>

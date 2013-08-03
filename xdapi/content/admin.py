@@ -13,11 +13,13 @@ import reversion
 _ = lambda x:x
 
 class ContentAdmin(reversion.VersionAdmin):
-    list_display = ('key', 'content_type', 'title', 'url', 'owner', 'status', 'mime_type',)
+    list_display = ('key', 'content_type', 'title', 'url', 'owner', 'status', 'get_tags_labels', 'mime_type',)
+    list_filter = ('content_type', 'owner', 'status', 'mime_type',)
     fieldsets = [
         (None, {'fields': ['content_type', 'key', 'title', 'description', 'content', 'url', 'uploaded_file',],}),
         (_('Additional Details'), {'fields': ['tags', 'status', 'owner', 'password', 'mime_type',], 'classes': ['collapse',],})
     ]
+
 
     def save_model(self, request, obj, form, change):
         """Save user information"""

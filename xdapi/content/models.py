@@ -87,6 +87,19 @@ class Content(models.Model):
 
     tags = TaggableManager()
 
+    def get_tags(self):
+        return self.tags.get_query_set()
+    get_tags.short_description = _('Tags')
+
+    def get_tags_names(self):
+        return [str(x) for x in self.get_tags()]
+    get_tags_names.short_description = _('Tags')
+
+    def get_tags_labels(self):
+        return " ".join(['<span class="label">' + x + '</span>' for x in self.get_tags_names()])
+    get_tags_labels.short_description = _('Tags')
+    get_tags_labels.allow_tags = True
+
     def get_page_title(self):
         # TODO: Fetch page meta: og:title, og:sitename, og:description
         try:

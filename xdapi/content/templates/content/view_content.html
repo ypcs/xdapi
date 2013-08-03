@@ -1,15 +1,23 @@
 {% extends "base.html" %}
+{% load i18n %}
+{% block title %}{{ obj.title }} &ndash; {{ block.super }}{% endblock %}
 
-{% block title %}{% endblock %}
+{% block extrahead %}
+<meta name="og:description" content="{{ obj.description }}"/>
+<meta name="og:title" content="{{ obj.title }}"/>
+{% endblock %}
+
+{% block navbar %}{% endblock %}
 
 {% block content %}
     
-    <hgroup>
-    {% if obj.title %}<h1>{{ obj.title }}</h1>{% endif %}
-    {% if obj.description %}<h2>{{ obj.description }}</h2>{% endif %}
+    <hgroup class="page-header">
+        {% if obj.title %}<h1>{{ obj.title }}{% for t in obj.get_tags %}
+        <span class="label">{{ t }}</span>
+        {% endfor %}</h1>{% endif %}
+        {% if obj.description %}<p>{{ obj.description }}</p>{% endif %}
     </hgroup>
     
-
     {% if obj.url %}
     <p><a href="{{ obj.url }}">{{ obj.url }}</a></p>
     {% endif %}
@@ -19,4 +27,5 @@
         <pre>{{ obj.content }}</pre>
     </div>
     {% endif %}
+
 {% endblock %}
