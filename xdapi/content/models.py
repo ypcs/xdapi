@@ -6,6 +6,7 @@ from django.conf import settings
 
 from bs4 import BeautifulSoup
 import requests
+import reversion
 
 _ = lambda x:x
 
@@ -94,3 +95,4 @@ class Content(models.Model):
     class Meta:
         verbose_name = _("Content")
         verbose_name_plural = _("Contents")
+reversion.register(Content)

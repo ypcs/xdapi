@@ -4,13 +4,14 @@ from content.models import Content
 from django.http import HttpResponseRedirect
 from django.core.urlresolvers import reverse
 
+import reversion
 # TODO: Allow searching by URL, for example "I wan't to see what keys link to this URL"
 # TODO: If superuser, allow editing status
 # TODO: If superuser, allow editing owner
 
 _ = lambda x:x
 
-class ContentAdmin(admin.ModelAdmin):
+class ContentAdmin(reversion.VersionAdmin):
     list_display = ('key', 'content_type', 'title', 'url', 'owner', 'visit_count', 'status',)
     fieldsets = [
         (None, {'fields': ['content_type', 'key', 'title', 'content', 'url',],}),
