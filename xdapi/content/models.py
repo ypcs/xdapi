@@ -76,10 +76,6 @@ class Content(models.Model):
     status = models.CharField(max_length=1, choices=CONTENT_STATUS_CHOICES, default=CONTENT_STATUS_ACTIVE)
     owner = models.ForeignKey(settings.AUTH_USER_MODEL, blank=True, null=True)
 
-    def update_visits(self):
-        self.visit_count += 1
-        self.save()
-
     def get_page_title(self):
         try:
             req = requests.get(self.url)
