@@ -15,7 +15,7 @@ class ContentAdmin(reversion.VersionAdmin):
     list_display = ('key', 'content_type', 'title', 'url', 'owner', 'status',)
     fieldsets = [
         (None, {'fields': ['content_type', 'key', 'title', 'content', 'url',],}),
-        (_('Additional Details'), {'fields': ['status', 'owner',], 'classes': ['collapse',],})
+        (_('Additional Details'), {'fields': ['status', 'owner', 'mime_type',], 'classes': ['collapse',],})
     ]
 
     def save_model(self, request, obj, form, change):
