@@ -31,7 +31,7 @@ class ShortURL(models.Model):
 
     status = models.CharField(max_length=1, choices=SHORTURL_STATUS_CHOICES, default='A')
 
-    owner = models.ForeignKey(settings.AUTH_USER_MODEL)
+    owner = models.ForeignKey(settings.AUTH_USER_MODEL, blank=True, null=True)
 
     def is_redirectable(self):
         # TODO: Check this @ views.py
