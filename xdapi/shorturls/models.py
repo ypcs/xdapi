@@ -18,6 +18,8 @@ SHORTURL_STATUS_EXPIRED = 'E'
 SHORTURL_STATUS_SPAM = 'S'
 SHORTURL_STATUS_REMOVED = 'R'
 
+SHORTURL_DEFAULT_KEY_LENGTH = 4
+
 class ShortURL(models.Model):
     SHORTURL_STATUS_CHOICES = (
         (SHORTURL_STATUS_ACTIVE, _('Active')),     # Created, in use
@@ -71,9 +73,14 @@ class ShortURL(models.Model):
     def __str__(self):
         return "%s => %s" % (self.key, self.url)
 
+    def _random_key(self, length=SHORTURL_DEFAULT_KEY_LENGTH):
+        pass
+
     def save(self, *args, **kwargs):
         # TODO: Check HTTP status code, if not 200, alert user
-        print self.title
+        if self.key == "":
+            # TODO: create random key
+            pass
         if self.title == "":
             self.title = self.get_page_title()
         super(ShortURL, self).save(*args, **kwargs)
