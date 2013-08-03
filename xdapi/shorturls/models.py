@@ -1,8 +1,11 @@
 # -*- coding: utf-8 -*-
 from django.db import models
+from django.core.validators import RegexValidator
 from django_extensions.db.fields import CreationDateTimeField, ModificationDateTimeField
 
 _ = lambda x:x
+
+SHORTURL_KEY_REGEX = r'^[\w\d:-]{3,255}'
 
 class ShortURL(models.Model):
     SHORTURL_STATUS_CHOICES = (
@@ -11,10 +14,11 @@ class ShortURL(models.Model):
         ('S', _('Spam')),       # Marked as spam, do not redirect
         ('V', _('Verified')),   # Manually checked & verified, OK
         ('E', _('Expired')),    # Expired, do not redirect
+        ('C', _('Confirm')),    # Confirm, that user really want's to continue
     )
 
     url = models.URLField(verbose_name='URL')
-    key = models.CharField(max_length=255, unique=True)
+    key = models.CharField(max_length=255, unique=True, validators=[RegexValidator(regex=SHORTURL_KEY_REGEX)])
 
     title = models.CharField(max_length=255, blank=True, null=True)
 
