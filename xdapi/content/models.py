@@ -29,28 +29,33 @@ CONTENT_STATUS_REMOVED = 'R'
 CONTENT_STATUS_VERIFIED = 'V'
 CONTENT_STATUS_PRIVATE = 'P'
 
+# Allowed statuses
+CONTENT_STATUS_CHOICES = (
+    (CONTENT_STATUS_ACTIVE, _('Active')), # Created, in use
+    (CONTENT_STATUS_REMOVED, _('Removed')), # Removed, do not redirect
+    (CONTENT_STATUS_SPAM, _('Spam')), # Marked as spam, do not redirect
+    (CONTENT_STATUS_VERIFIED, _('Verified')), # Manually checked & verified, OK
+    (CONTENT_STATUS_EXPIRED, _('Expired')), # Expired, do not redirect
+    (CONTENT_STATUS_FAILURE, _('Failure')), # Has raised automatically detected failure
+    (CONTENT_STATUS_PRIVATE, _('Private')), # Private content, owner must be logged in to access
+)
+
+# Which content should raise error?
 CONTENT_DISABLED_STATUSES = (
     CONTENT_STATUS_REMOVED,
     CONTENT_STATUS_SPAM,
     CONTENT_STATUS_EXPIRED,
 )
 
-CONTENT_ALLOW_AUTOREDIRECT_STATUSES = (
+# What statuses are we allowed automatically redirect user to
+CONTENT_ALLOW_REDIRECT_STATUSES = (
     CONTENT_STATUS_VERIFIED,
 )
 
 MIME_TYPE_DEFAULT = 'text/plain'
 
 class Content(models.Model):
-    CONTENT_STATUS_CHOICES = (
-        (CONTENT_STATUS_ACTIVE, _('Active')),     # Created, in use
-        (CONTENT_STATUS_REMOVED, _('Removed')),    # Removed, do not redirect
-        (CONTENT_STATUS_SPAM, _('Spam')),       # Marked as spam, do not redirect
-        (CONTENT_STATUS_VERIFIED, _('Verified')),   # Manually checked & verified, OK
-        (CONTENT_STATUS_EXPIRED, _('Expired')),    # Expired, do not redirect
-        (CONTENT_STATUS_FAILURE, _('Failure')), # Has raised automatically detected failure
-        (CONTENT_STATUS_PRIVATE, _('Private')), # Private content, owner must be logged in to access
-    )
+
     
     content_type = models.CharField(max_length=1, choices=CONTENT_TYPES)
     key = models.CharField(max_length=255, unique=True, validators=[RegexValidator(regex=settings.CONTENT_KEY_REGEX)])
