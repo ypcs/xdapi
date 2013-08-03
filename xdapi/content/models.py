@@ -13,7 +13,7 @@ _ = lambda x:x
 
 CONTENT_TYPES = (
     ('P', _('Pastebin')),
-    ('U', _('ShortURL')),
+    ('U', _('URL Redirect')),
     ('W', _('Webshots')),
     ('F', _('File Upload')),
 )
