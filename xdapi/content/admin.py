@@ -8,6 +8,7 @@ import reversion
 # TODO: Allow searching by URL, for example "I wan't to see what keys link to this URL"
 # TODO: If superuser, allow editing status
 # TODO: If superuser, allow editing owner
+# TODO: Add "view" (ie. visit content page) link to list view
 
 _ = lambda x:x
 
