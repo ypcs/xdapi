@@ -50,6 +50,9 @@ class Content(models.Model):
     key = models.CharField(max_length=255, unique=True, validators=[RegexValidator(regex=settings.CONTENT_KEY_REGEX)])
 
     title = models.CharField(max_length=255, blank=True, null=True)
+    content = models.TextField(blank=True, null=True)
+    url = models.URLField(verbose_name='URL', blank=True, null=True)
+
 
     visit_count = models.PositiveIntegerField(editable=False, default=0)
 
@@ -62,12 +65,6 @@ class Content(models.Model):
     def update_visits(self):
         self.visit_count += 1
         self.save()
-
-    def __str__(self):
-        return "%s: %s" % (self.key, self.title)
-
-class URLContent(Content):
-    url = models.URLField(verbose_name='URL')
 
     def get_page_title(self):
         try:
@@ -82,13 +79,13 @@ class URLContent(Content):
             return ""
 
     def save(self, *args, **kwargs):
-        if self.title == "":
+        if self.title == "" and self.url != "":
             self.title = self.get_page_title()
         super(ShortURL, self).save(*args, **kwargs)
 
-    class Meta:
-        verbose_name = _("URL")
-        verbose_name_plural = _("URLs")
+    def __str__(self):
+        return "%s: %s" % (self.key, self.title)
 
-class PastebinContent(Content):
-    pass
+    class Meta:
+        verbose_name = _("Content")
+        verbose_name_plural = _("Contents")
