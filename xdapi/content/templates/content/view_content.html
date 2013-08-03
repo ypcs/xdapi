@@ -1,7 +1,22 @@
 {% extends "base.html" %}
 
-{% block title}{% endblock %}
+{% block title %}{% endblock %}
 
 {% block content %}
+    
+    <hgroup>
+    {% if obj.title %}<h1>{{ obj.title }}</h1>{% endif %}
+    {% if obj.description %}<h2>{{ obj.description }}</h2>{% endif %}
+    </hgroup>
+    
 
+    {% if obj.url %}
+    <p><a href="{{ obj.url }}">{{ obj.url }}</a></p>
+    {% endif %}
+
+    {% if obj.content %}
+    <div id="content-data">
+        <pre>{{ obj.content }}</pre>
+    </div>
+    {% endif %}
 {% endblock %}

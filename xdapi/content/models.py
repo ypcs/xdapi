@@ -11,6 +11,7 @@ import reversion
 
 _ = lambda x:x
 
+# TODO: Add support for OpenGraph
 
 CONTENT_TYPE_URL = 'U'
 CONTENT_TYPE_PASTE = 'P'
@@ -66,6 +67,7 @@ class Content(models.Model):
     #key = AutoSlugField(editable=True, blank=True, unique=True, populate_from=['title', 'content'], validators=[RegexValidator(regex=settings.CONTENT_KEY_REGEX)])
 
     title = models.CharField(max_length=255, blank=True, null=True)
+    description = models.TextField(blank=True, null=True)
     content = models.TextField(blank=True, null=True)
     url = models.URLField(verbose_name='URL', blank=True, null=True)
     uploaded_file = models.FileField(upload_to='content/uploads', blank=True, null=True)
@@ -114,6 +116,9 @@ class Content(models.Model):
 
     def __str__(self):
         return "%s: %s" % (self.key, self.title)
+
+    def __unicode__(self):
+        return self.__str__()
 
     class Meta:
         verbose_name = _("Content")

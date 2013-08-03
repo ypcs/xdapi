@@ -14,6 +14,6 @@ urlpatterns = patterns('',
 
     url(r'^admin/', include(admin.site.urls)),
 
-    url(r'^~(?P<user>\w+)/(?P<key>' + settings.CONTENT_KEY_REGEX + ')$', UserContentView.as_view(), name='user-content'),
+    # url(r'^~(?P<user>\w+)/(?P<key>' + settings.CONTENT_KEY_REGEX + ')$', UserContentView.as_view(), name='user-content'),
     url(r'^(?P<key>' + settings.CONTENT_KEY_REGEX + ')$', ContentView.as_view(), name='content'),
 )

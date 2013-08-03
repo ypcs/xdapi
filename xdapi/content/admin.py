@@ -15,7 +15,7 @@ _ = lambda x:x
 class ContentAdmin(reversion.VersionAdmin):
     list_display = ('key', 'content_type', 'title', 'url', 'owner', 'status', 'mime_type',)
     fieldsets = [
-        (None, {'fields': ['content_type', 'key', 'title', 'content', 'url', 'uploaded_file',],}),
+        (None, {'fields': ['content_type', 'key', 'title', 'description', 'content', 'url', 'uploaded_file',],}),
         (_('Additional Details'), {'fields': ['status', 'owner', 'password', 'mime_type',], 'classes': ['collapse',],})
     ]
 
