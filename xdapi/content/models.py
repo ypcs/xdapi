@@ -14,6 +14,7 @@ CONTENT_TYPES = (
     ('P', _('Pastebin')),
     ('U', _('ShortURL')),
     ('W', _('Webshots')),
+    ('F', _('File Upload')),
 )
 
 CONTENT_KEY_REGEX = r'^[\w\d:-]{3,255}'
@@ -78,9 +79,12 @@ class Content(models.Model):
             return ""
 
     def save(self, *args, **kwargs):
+        # TODO: If shorturl, check that URL has been defined
+        # TODO: If pastebin, check that content has been set, OR if URL has been set, fetch content from it, content must be text/*
+        # TODO: If no title and has url, fetch title from it (or at least, try!)
         if self.title == "" and self.url != "":
             self.title = self.get_page_title()
-        super(ShortURL, self).save(*args, **kwargs)
+        super(Content, self).save(*args, **kwargs)
 
     def __str__(self):
         return "%s: %s" % (self.key, self.title)
