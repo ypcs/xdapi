@@ -84,6 +84,7 @@ class Content(models.Model):
     owner = models.ForeignKey(settings.AUTH_USER_MODEL, blank=True, null=True)
 
     def get_page_title(self):
+        # TODO: Fetch page meta: og:title, og:sitename, og:description
         try:
             req = requests.get(self.url)
             if req.status_code == requests.codes.ok:

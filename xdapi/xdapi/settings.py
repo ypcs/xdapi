@@ -44,6 +44,7 @@ INSTALLED_APPS = (
     'content',
     'reversion',
     'tracking',
+    'taggit',
 #    's3_folder_storage',
 )
 
